@@ -1,0 +1,25 @@
+name: 'ccodwg-update-run'
+description: 'Run commands in the ccodwg-update Docker container'
+inputs:
+  command_string:
+    description: 'Command string to run in the Docker container'
+    required: true
+  service_key:
+    description: 'Google service account key'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build Docker container
+      run: |
+        docker pull selenium/standalone-chrome:latest
+        docker build -t self/ccodwg-docker:latest docker/ccodwg-update
+      shell: bash
+    - name: Run commands in Docker container
+      run: |
+        docker run --rm -e SERVICE_KEY -v /var/run/docker.sock:/var/run/docker.sock self/ccodwg-docker:latest /bin/bash -c "${{ inputs.command_string }}"
+      shell: bash
+      env:
+        SERVICE_KEY: ${{ inputs.service_key }}
