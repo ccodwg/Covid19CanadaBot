@@ -15,11 +15,11 @@ runs:
     - name: Build Docker container
       run: |
         docker pull selenium/standalone-chrome:latest
-        docker build -t self/ccodwg-docker:latest docker/ccodwg-update
+        docker build -t self/ccodwg-update:latest docker/ccodwg-update
       shell: bash
     - name: Run commands in Docker container
       run: |
-        docker run --rm -e SERVICE_KEY -v /var/run/docker.sock:/var/run/docker.sock self/ccodwg-docker:latest /bin/bash -c "${{ inputs.command_string }}"
+        docker run --rm -e SERVICE_KEY -v /var/run/docker.sock:/var/run/docker.sock self/ccodwg-update:latest /bin/bash -c "${{ inputs.command_string }}"
       shell: bash
       env:
         SERVICE_KEY: ${{ inputs.service_key }}
