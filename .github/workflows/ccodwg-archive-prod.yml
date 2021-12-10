@@ -1,0 +1,17 @@
+name: ccodwg-archive-prod
+
+on:
+  workflow_dispatch
+
+jobs:
+  run-update:
+    runs-on: ubuntu-latest
+    name: Run CCODWG archival tool (prod)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run commands in Docker container
+        uses: ./actions/ccodwg-archive-run
+        with:
+          command_string: "scripts/copy-env.sh; scripts/ccodwg-archive-prod.sh"
+          archive_env: ${{ secrets.archive_env }}

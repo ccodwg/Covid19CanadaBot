@@ -17,4 +17,3 @@ COPY scripts /scripts
 
 # open shell
 CMD /bin/bash
-

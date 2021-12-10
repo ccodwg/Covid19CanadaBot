@@ -1,0 +1,24 @@
+name: 'ccodwg-archive-run'
+description: 'Run commands in the ccodwg-archive Docker container'
+inputs:
+  command_string:
+    description: 'Command string to run in the Docker container'
+    required: true
+  archive_env:
+    description: 'Environmental variables for the archival scripts'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Build Docker container
+      run: |
+        docker build -t self/ccodwg-archive:latest docker/ccodwg-archive
+      shell: bash
+    - name: Run commands in Docker container
+      run: |
+        docker run --rm -t -e ARCHIVE_ENV -v /var/run/docker.sock:/var/run/docker.sock self/ccodwg-archive:latest /bin/bash -c "${{ inputs.command_string }}"
+      shell: bash
+      env:
+        ARCHIVE_ENV: ${{ inputs.archive_env }}
