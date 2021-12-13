@@ -4,9 +4,10 @@ on:
   workflow_dispatch
 
 jobs:
-  run-update:
+  run-update-all:
     runs-on: ubuntu-latest
     name: Run CCODWG update (phu, main)
+    timeout-minutes: 60
     steps:
       - name: Checkout
         uses: actions/checkout@v2
