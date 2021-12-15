@@ -25,7 +25,7 @@ runs:
         server = smtplib.SMTP_SSL(os.environ['SMTP_SERVER'], os.environ['SMTP_PORT'])
         server.ehlo()
         server.login(os.environ['MAIL_NAME'], os.environ['MAIL_PASS'])
-        email_text = 'From: ' + os.environ['MAIL_NAME'] + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
+        email_text = 'From: ' + os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'] + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
         server.sendmail(os.environ['MAIL_NAME'], os.environ['MAIL_TO'], email_text)
         server.close()
         EOF
