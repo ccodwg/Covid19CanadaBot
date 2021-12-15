@@ -17,16 +17,17 @@ runs:
       run: |
         echo "$ARCHIVE_ENV" >> ~/archive.env
         set -a; source ~/archive.env; set +a
-        export SUBJECT=${{ inputs.subject }}
-        export BODY=${{ inputs.body }}
+        export SUBJECT="${{ inputs.subject }}"
+        export BODY="${{ inputs.body }}"
         python - <<EOF
         import os
         import smtplib
         server = smtplib.SMTP_SSL(os.environ['SMTP_SERVER'], os.environ['SMTP_PORT'])
         server.ehlo()
         server.login(os.environ['MAIL_NAME'], os.environ['MAIL_PASS'])
-        email_text = 'From: ' + os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'] + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
-        server.sendmail(os.environ['MAIL_NAME'], os.environ['MAIL_TO'], email_text)
+        sender = (os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'])
+        email_text = 'From: ' + sender + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
+        server.sendmail(sender, os.environ['MAIL_TO'], email_text)
         server.close()
         EOF
       shell: bash
