@@ -1,0 +1,34 @@
+name: 'send-email'
+description: 'Send email'
+inputs:
+  subject:
+    description: Email subject
+    required: true
+  body:
+    description: Email body
+    required: true
+  archive_env:
+    description: 'Environmental variables for the archival scripts'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Send email
+      run: |
+        echo "$ARCHIVE_ENV" >> ~/archive.env
+        set -a; source ~/archive.env; set +a
+        export SUBJECT=${{ inputs.subject }}
+        export BODY=${{ inputs.body }}
+        python - <<EOF
+        import os
+        import smtplib
+        server = smtplib.SMTP_SSL(os.environ['SMTP_SERVER'], os.environ['SMTP_PORT'])
+        server.ehlo()
+        server.login(os.environ['MAIL_NAME'], os.environ['MAIL_PASS'])
+        email_text = 'From: ' + os.environ['MAIL_NAME'] + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
+        server.sendmail(os.environ['MAIL_NAME'], os.environ['MAIL_TO'], email_text)
+        server.close()
+        EOF
+      shell: bash
+      env:
+        ARCHIVE_ENV: ${{ inputs.archive_env }}
