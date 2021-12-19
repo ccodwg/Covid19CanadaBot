@@ -1,0 +1,25 @@
+name: send-email
+
+on:
+  workflow_dispatch:
+    inputs:
+      subject:
+        description: Email subject
+        required: true
+      body:
+        description: Email body
+        required: true
+
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    name: Send email
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Send email
+        uses: ./actions/send-email
+        with:
+          subject: ${{ github.event.inputs.subject }}
+          body: ${{ github.event.inputs.body }}
+          archive_env: ${{ secrets.archive_env }}
