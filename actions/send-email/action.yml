@@ -22,12 +22,17 @@ runs:
         python - <<EOF
         import os
         import smtplib
+        from email.mime.text import MIMEText
+        sender = (os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'])
+        to = os.environ['MAIL_TO']
+        msg = MIMEText(os.environ['BODY'].encode('utf-8'), _charset='utf-8')
+        msg['Subject'] = os.environ['SUBJECT']
+        msg['From'] = sender
+        msg['To'] = to
         server = smtplib.SMTP_SSL(os.environ['SMTP_SERVER'], os.environ['SMTP_PORT'])
         server.ehlo()
         server.login(os.environ['MAIL_NAME'], os.environ['MAIL_PASS'])
-        sender = (os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'])
-        email_text = 'From: ' + sender + '\nTo: ' + os.environ['MAIL_TO'] + '\nSubject: ' + os.environ['SUBJECT'] + '\n\n' + os.environ['BODY']
-        server.sendmail(sender, os.environ['MAIL_TO'], email_text)
+        server.sendmail(sender, to, msg.as_string())
         server.close()
         EOF
       shell: bash
