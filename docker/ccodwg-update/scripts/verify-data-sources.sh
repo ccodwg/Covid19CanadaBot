@@ -9,5 +9,8 @@ git clone \
 cd Covid19Canada
 git sparse-checkout set scripts
 
+# export GitHub PAT
+export GITHUB_PAT=$GH_PAT
+
 # run verify_data_sources.R
 Rscript "scripts/verify_data_sources.R"
