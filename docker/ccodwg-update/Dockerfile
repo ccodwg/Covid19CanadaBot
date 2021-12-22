@@ -1,10 +1,14 @@
 # get latest R image from Rocker
 FROM rocker/tidyverse:latest
 
+# add PPA to install latest version of git
+RUN apt-get update && apt-get install -y software-properties-common && apt-add-repository ppa:git-core/ppa
+
 # install Docker and other dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
  docker.io \
- libmagick++-dev
+ libmagick++-dev \
+ git
 
 # install CCODWG ETL packages and other R packages
 ARG GH_PAT
