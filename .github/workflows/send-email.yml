@@ -3,6 +3,9 @@ name: send-email
 on:
   workflow_dispatch:
     inputs:
+      to:
+        description: The email address the message with be sent to (if not provided, will be read from environmental variable MAIL_TO)
+        required: false
       subject:
         description: Email subject
         required: true
@@ -20,6 +23,7 @@ jobs:
       - name: Send email
         uses: ./actions/send-email
         with:
+          to: ${{ github.event.inputs.to }}
           subject: ${{ github.event.inputs.subject }}
           body: ${{ github.event.inputs.body }}
           archive_env: ${{ secrets.archive_env }}

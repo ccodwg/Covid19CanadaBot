@@ -1,6 +1,9 @@
 name: 'send-email'
 description: 'Send email'
 inputs:
+  to:
+    description: The email address the message with be sent to (if not provided, will be read from environmental variable MAIL_TO)
+    required: false
   subject:
     description: Email subject
     required: true
@@ -19,12 +22,13 @@ runs:
         set -a; source ~/archive.env; set +a
         export SUBJECT="${{ inputs.subject }}"
         export BODY="${{ inputs.body }}"
+        export INPUT_MAIL_TO="${{ inputs.to }}"
         python - <<EOF
         import os
         import smtplib
         from email.mime.text import MIMEText
         sender = (os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'])
-        to = os.environ['MAIL_TO']
+        to = os.environ['INPUT_MAIL_TO'] if os.environ['INPUT_MAIL_TO'] != '' else os.environ['MAIL_TO']
         msg = MIMEText(os.environ['BODY'].encode('utf-8'), _charset='utf-8')
         msg['Subject'] = os.environ['SUBJECT']
         msg['From'] = sender
