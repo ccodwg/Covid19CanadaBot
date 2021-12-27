@@ -17,6 +17,9 @@ RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 # set display port environmental variable
 ENV DISPLAY=:99
 
+# install archivist package
+RUN pip3 install git+https://github.com/jeanpaulrsoucy/archivist.git#egg=archivist
+
 # clone Covid19CanadaArchive repository
 RUN git clone --depth=1 https://github.com/ccodwg/Covid19CanadaArchive.git
 
