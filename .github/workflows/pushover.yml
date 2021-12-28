@@ -1,0 +1,36 @@
+name: pushover
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "The body of the notification"
+        required: true
+      priority:
+        description: "Message priority, an integer from -2 to 2, see: https://pushover.net/api#priority; defaults to 0 (normal priority)"
+        required: false
+        default: 0
+      title:
+        description: "The title of the notification; if null (the default), the application's name will be used"
+        required: false
+        default: null
+      device:
+        description: "The name of the device to send the notification to; if null (the default), the notification will be sent to all devices"
+        required: false
+        default: null
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    name: Pushover
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Pushover
+        uses: ./actions/pushover
+        with:
+          message: ${{ github.event.inputs.message }}
+          priority: ${{ github.event.inputs.priority }}
+          title: ${{ github.event.inputs.title }}
+          device: ${{ github.event.inputs.device }}
+          archive_env: ${{ secrets.archive_env }}

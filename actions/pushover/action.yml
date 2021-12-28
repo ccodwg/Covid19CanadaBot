@@ -1,0 +1,69 @@
+name: 'Pushover'
+description: 'Send notification to device via the Pushover API (https://pushover.net/api)'
+inputs:
+  message:
+    description: "The body of the noficiation"
+    required: true
+  priority:
+    description: "Message priority, an integer from -2 to 2, see: https://pushover.net/api#priority; defaults to 0 (normal priority)"
+    required: false
+    default: 0
+  title:
+    description: "The title of the notification; if null (the default), the application's name will be used"
+    required: false
+    default: null
+  device:
+    description: "The name of the device to send the notification to; if null (the default), the notification will be sent to all devices"
+    required: false
+    default: null
+  archive_env:
+    description: "Environmental variables for the archival scripts"
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Send notification
+      run: |
+        echo "$ARCHIVE_ENV" >> ~/archive.env
+        set -a; source ~/archive.env; set +a
+        python - <<EOF
+        import os, http.client, urllib
+        # read parameters
+        title = '${{ inputs.title }}'
+        if title == '':
+          title = None
+        device = '${{ inputs.device }}'
+        if device == '':
+          device = None
+        # assemble body
+        body = {
+        'token': os.environ['PO_TOKEN'],
+        'user': os.environ['PO_KEY'],
+        'message': '${{ inputs.message }}',
+        'priority': '${{ inputs.priority }}',
+        'title': title,
+        'device': device
+        }
+        # remove unused parameters
+        if (title is None):
+            body.pop('title')
+        if (device is None):
+            body.pop('device')
+        # encode body
+        body_enc = urllib.parse.urlencode(body)
+        # send notification
+        conn = http.client.HTTPSConnection('api.pushover.net:443')
+        conn.request('POST', '/1/messages.json', body_enc, { 'Content-type': 'application/x-www-form-urlencoded' })
+        status = conn.getresponse().status
+        # check response
+        if (status == 200):
+            print('Notification sent successfully.')
+        else:
+            print('Status: ' + str(status))
+            print('Notification did not send successfully.')
+        # close connection
+        conn.close()
+        EOF
+      shell: bash
+      env:
+        ARCHIVE_ENV: ${{ inputs.archive_env }}
