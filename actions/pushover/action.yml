@@ -2,7 +2,7 @@ name: 'Pushover'
 description: 'Send notification to device via the Pushover API (https://pushover.net/api)'
 inputs:
   message:
-    description: "The body of the noficiation"
+    description: "The body of the notification"
     required: true
   priority:
     description: "Message priority, an integer from -2 to 2, see: https://pushover.net/api#priority; defaults to 0 (normal priority)"

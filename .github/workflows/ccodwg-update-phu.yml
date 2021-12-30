@@ -14,6 +14,8 @@ jobs:
       - name: Run commands in Docker container
         uses: ./actions/ccodwg-update-run
         with:
-          command_string: "scripts/copy-service-key.sh; scripts/update-phu.sh"
+          command_string: "export GITHUB_PAT=$GH_PAT; \
+                           scripts/copy-service-key.sh; \
+                           scripts/update-phu.sh"
           gh_pat: ${{ secrets.gh_pat }}
           service_key: ${{ secrets.service_key }}
