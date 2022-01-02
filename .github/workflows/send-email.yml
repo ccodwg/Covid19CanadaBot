@@ -3,9 +3,6 @@ name: send-email
 on:
   workflow_dispatch:
     inputs:
-      to:
-        description: The email address the message with be sent to (if not provided, will be read from environmental variable MAIL_TO)
-        required: false
       subject:
         description: Email subject
         required: true
@@ -20,10 +17,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Read and set email environment
+        run: |
+          # set and mask variables from mail environment file
+          export $(echo "$EMAIL_ENV")
+          echo "mail_to=$MAIL_TO" >> $GITHUB_ENV; echo "::add-mask::$MAIL_TO"
+          echo "mail_name=$MAIL_NAME" >> $GITHUB_ENV; echo "::add-mask::$MAIL_NAME"
+          echo "mail_alias=$MAIL_ALIAS" >> $GITHUB_ENV; echo "::add-mask::$MAIL_ALIAS"
+          echo "mail_pass=$MAIL_PASS" >> $GITHUB_ENV; echo "::add-mask::$MAIL_PASS"
+          echo "smtp_server=$SMTP_SERVER" >> $GITHUB_ENV; echo "::add-mask::$SMTP_SERVER"
+          echo "smtp_port=$SMTP_PORT" >> $GITHUB_ENV; echo "::add-mask::$SMTP_PORT"
+        shell: bash
+        env:
+          EMAIL_ENV: ${{ secrets.email_env_jprs }}
       - name: Send email
         uses: ./actions/send-email
         with:
-          to: ${{ github.event.inputs.to }}
           subject: ${{ github.event.inputs.subject }}
           body: ${{ github.event.inputs.body }}
-          archive_env: ${{ secrets.archive_env }}
+          to: ${{ env.mail_to }}
+          from: ${{ env.mail_name }}
+          from_alias: ${{ env.mail_alias }}
+          mail_pass: ${{ env.mail_pass }}
+          smtp_server: ${{ env.smtp_server }}
+          smtp_port: ${{ env.smtp_port }}

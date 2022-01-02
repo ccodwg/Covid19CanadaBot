@@ -1,34 +1,54 @@
 name: 'send-email'
 description: 'Send email'
 inputs:
-  to:
-    description: The email address the message with be sent to (if not provided, will be read from environmental variable MAIL_TO)
-    required: false
   subject:
     description: Email subject
     required: true
   body:
     description: Email body
     required: true
-  archive_env:
-    description: 'Environmental variables for the archival scripts'
+  to:
+    description: Email account receiving the message
     required: true
+  from:
+    description: Email account sending the message
+    required: true
+  from_alias:
+    description: (Optional) Alias name of the sender's email account
+    required: false
+  mail_pass:
+    description: Password of the sender's email account 
+    required: true
+  smtp_server:
+    description: SMTP server address
+    required: true
+  smtp_port:
+    description: SMTP server port
+    required: true
+  
 runs:
   using: "composite"
   steps:
     - name: Send email
       run: |
-        echo "$ARCHIVE_ENV" >> ~/archive.env
-        set -a; source ~/archive.env; set +a
         export SUBJECT="${{ inputs.subject }}"
         export BODY="${{ inputs.body }}"
-        export INPUT_MAIL_TO="${{ inputs.to }}"
+        export MAIL_TO="${{ inputs.to }}"
+        export MAIL_NAME="${{ inputs.from }}"
+        export MAIL_ALIAS="${{ inputs.from_alias }}"
+        if [[ $MAIL_ALIAS == "" ]]
+        then
+          MAIL_ALIAS=$MAIL_NAME
+        fi
+        export MAIL_PASS="${{ inputs.mail_pass }}"
+        export SMTP_SERVER="${{ inputs.smtp_server }}"
+        export SMTP_PORT="${{ inputs.smtp_port }}"
         python - <<EOF
         import os
         import smtplib
         from email.mime.text import MIMEText
-        sender = (os.environ['MAIL_ALIAS'] if 'MAIL_ALIAS' in os.environ.keys() else os.environ['MAIL_NAME'])
-        to = os.environ['INPUT_MAIL_TO'] if os.environ['INPUT_MAIL_TO'] != '' else os.environ['MAIL_TO']
+        sender = os.environ['MAIL_ALIAS']
+        to = os.environ['MAIL_TO']
         msg = MIMEText(os.environ['BODY'].encode('utf-8'), _charset='utf-8')
         msg['Subject'] = os.environ['SUBJECT']
         msg['From'] = sender
@@ -40,5 +60,3 @@ runs:
         server.close()
         EOF
       shell: bash
-      env:
-        ARCHIVE_ENV: ${{ inputs.archive_env }}
