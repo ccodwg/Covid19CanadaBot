@@ -8,16 +8,14 @@ on:
         required: true
       priority:
         description: "Message priority, an integer from -2 to 2, see: https://pushover.net/api#priority; defaults to 0 (normal priority)"
-        required: false
+        required: true
         default: 0
       title:
-        description: "The title of the notification; if null (the default), the application's name will be used"
+        description: "The title of the notification; if not provided, the application's name will be used"
         required: false
-        default: null
       device:
-        description: "The name of the device to send the notification to; if null (the default), the notification will be sent to all devices"
+        description: "The name of the device to send the notification to; if not provided, the notification will be sent to all devices"
         required: false
-        default: null
 
 jobs:
   send-notification:
@@ -26,6 +24,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Read and set Pushover environment
+        run: |
+          # set and mask variables from Pushover environment file
+          export $(echo "$PO_ENV")
+          echo "po_key=$PO_KEY" >> $GITHUB_ENV; echo "::add-mask::$PO_KEY"
+          echo "po_token=$PO_TOKEN" >> $GITHUB_ENV; echo "::add-mask::$PO_TOKEN"
+        shell: bash
+        env:
+          PO_ENV: ${{ secrets.po_env }}
       - name: Pushover
         uses: ./actions/pushover
         with:
@@ -33,4 +40,5 @@ jobs:
           priority: ${{ github.event.inputs.priority }}
           title: ${{ github.event.inputs.title }}
           device: ${{ github.event.inputs.device }}
-          archive_env: ${{ secrets.archive_env }}
+          po_key: ${{ env.po_key }}
+          po_token: ${{ env.po_token }}

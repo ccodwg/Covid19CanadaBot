@@ -6,41 +6,46 @@ inputs:
     required: true
   priority:
     description: "Message priority, an integer from -2 to 2, see: https://pushover.net/api#priority; defaults to 0 (normal priority)"
-    required: false
+    required: true
     default: 0
   title:
-    description: "The title of the notification; if null (the default), the application's name will be used"
+    description: "The title of the notification; if not provided, the application's name will be used"
     required: false
-    default: null
   device:
-    description: "The name of the device to send the notification to; if null (the default), the notification will be sent to all devices"
+    description: "The name of the device to send the notification to; if not provided, the notification will be sent to all devices"
     required: false
-    default: null
-  archive_env:
-    description: "Environmental variables for the archival scripts"
+  po_key:
+    description: "Pushover user key"
+    required: true
+  po_token:
+    description: "Pushover application token"
     required: true
 runs:
   using: 'composite'
   steps:
     - name: Send notification
       run: |
-        echo "$ARCHIVE_ENV" >> ~/archive.env
-        set -a; source ~/archive.env; set +a
+        export MESSAGE="${{ inputs.message }}"
+        export PRIORITY="${{ inputs.priority }}"
+        export TITLE="${{ inputs.title }}"
+        export DEVICE="${{ inputs.device }}"
+        export PO_KEY="${{ inputs.po_key }}"
+        export PO_TOKEN="${{ inputs.po_token }}"
         python - <<EOF
         import os, http.client, urllib
         # read parameters
-        title = '${{ inputs.title }}'
+        title = os.environ['TITLE']
         if title == '':
           title = None
-        device = '${{ inputs.device }}'
+        device = os.environ['DEVICE']
         if device == '':
           device = None
         # assemble body
         body = {
         'token': os.environ['PO_TOKEN'],
         'user': os.environ['PO_KEY'],
-        'message': '${{ inputs.message }}',
-        'priority': '${{ inputs.priority }}',
+        'message': os.environ['MESSAGE'],
+        'priority': os.environ['PRIORITY'],
         'title': title,
         'device': device
         }
@@ -65,5 +70,3 @@ runs:
         conn.close()
         EOF
       shell: bash
-      env:
-        ARCHIVE_ENV: ${{ inputs.archive_env }}
