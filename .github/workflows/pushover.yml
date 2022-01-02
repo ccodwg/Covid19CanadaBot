@@ -26,6 +26,15 @@ jobs:
         uses: actions/checkout@v2
       - name: Read and set Pushover environment
         run: |
+          # mask inputs
+          export MESSAGE=$(jq -r '.inputs.message' $GITHUB_EVENT_PATH)
+          echo "message=$MESSAGE" >> $GITHUB_ENV; echo "::add-mask::$MESSAGE"
+          export PRIORITY=$(jq -r '.inputs.priority' $GITHUB_EVENT_PATH)
+          echo "priority=$PRIORITY" >> $GITHUB_ENV; echo "::add-mask::$PRIORITY"
+          export TITLE=$(jq -r '.inputs.title' $GITHUB_EVENT_PATH)
+          echo "title=$TITLE" >> $GITHUB_ENV; echo "::add-mask::$TITLE"
+          export DEVICE=$(jq -r '.inputs.device' $GITHUB_EVENT_PATH)
+          echo "device=$DEVICE" >> $GITHUB_ENV; echo "::add-mask::$DEVICE"
           # set and mask variables from Pushover environment file
           export $(echo "$PO_ENV")
           echo "po_key=$PO_KEY" >> $GITHUB_ENV; echo "::add-mask::$PO_KEY"
@@ -36,9 +45,9 @@ jobs:
       - name: Pushover
         uses: ./actions/pushover
         with:
-          message: ${{ github.event.inputs.message }}
-          priority: ${{ github.event.inputs.priority }}
-          title: ${{ github.event.inputs.title }}
-          device: ${{ github.event.inputs.device }}
+          message: ${{ env.message }}
+          priority: ${{ env.priority }}
+          title: ${{ env.title }}
+          device: ${{ env.device }}
           po_key: ${{ env.po_key }}
           po_token: ${{ env.po_token }}
