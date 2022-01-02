@@ -7,6 +7,7 @@ jobs:
   run-update:
     runs-on: ubuntu-latest
     name: Run CCODWG archival tool (prod)
+    timeout-minutes: 50
     steps:
       - name: Checkout
         uses: actions/checkout@v2
