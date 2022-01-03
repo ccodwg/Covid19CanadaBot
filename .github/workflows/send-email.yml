@@ -22,7 +22,7 @@ jobs:
           # mask subject and body
           export SUBJECT=$(jq -r '.inputs.subject' $GITHUB_EVENT_PATH)
           echo "subject=$SUBJECT" >> $GITHUB_ENV; echo "::add-mask::$SUBJECT"
-          export BODY=$(echo $(jq -r '.inputs.body' $GITHUB_EVENT_PATH) | base64 -w 0)
+          export BODY=$(echo "$(jq -r '.inputs.body' $GITHUB_EVENT_PATH)" > body.txt; base64 body.txt -w 0)
           echo "body=$BODY" >> $GITHUB_ENV; echo "::add-mask::$BODY"
           # set and mask variables from mail environment file
           export $(echo "$EMAIL_ENV")
