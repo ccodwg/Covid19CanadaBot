@@ -5,7 +5,7 @@ inputs:
     description: Email subject
     required: true
   body:
-    description: Email body
+    description: Email body (Base64 encoded)
     required: true
   to:
     description: Email account receiving the message
@@ -32,7 +32,7 @@ runs:
     - name: Send email
       run: |
         export SUBJECT="${{ inputs.subject }}"
-        export BODY="${{ inputs.body }}"
+        export BODY=$(echo "${{ inputs.body }}" | base64 --decode)
         export MAIL_TO="${{ inputs.to }}"
         export MAIL_NAME="${{ inputs.from }}"
         export MAIL_ALIAS="${{ inputs.from_alias }}"
