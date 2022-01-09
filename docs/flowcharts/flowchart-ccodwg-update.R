@@ -37,5 +37,8 @@ flowchart_ccodwg_update <- grViz('digraph flowchart {
       
       }')
 
+# preview flowchart
+flowchart_ccodwg_update
+
 # export flowchart
 save_png(flowchart_ccodwg_update, "flowchart_ccodwg_update.png")
