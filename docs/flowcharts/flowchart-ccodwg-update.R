@@ -4,6 +4,9 @@ library(DiagrammeRsvg)
 library(rsvg)
 library(png)
 
+# load functions
+source("flowchart-funs.R")
+
 # define flowchart
 flowchart_ccodwg_update <- grViz('digraph flowchart {
       graph [layout = dot, fontsize = 20, label = "\nBlue boxes indicate an automated step. Red boxes indicate a manual step."]
@@ -33,15 +36,6 @@ flowchart_ccodwg_update <- grViz('digraph flowchart {
       prepare_update_official -> prepare_update -> update_github -> update_gdrive
       
       }')
-
-# function to export plot as png
-# https://stackoverflow.com/a/65919537
-save_png <- function(plot, path) {
-   DiagrammeRsvg::export_svg(plot) %>%
-      charToRaw() %>%
-      rsvg::rsvg() %>%
-      png::writePNG(path)
-}
 
 # export flowchart
 save_png(flowchart_ccodwg_update, "flowchart_ccodwg_update.png")
