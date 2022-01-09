@@ -14,3 +14,9 @@ To update the main dataset (`Covid19Canada`), I rely on the [`Covid19CanadaETL`]
 To update the archive (`Covid19CanadaArchive`), I use the Python package [`archivist`](https://github.com/jeanpaulrsoucy/archivist). This allows me to save snapshots of hundreds of datasets, websites and reports to a [public repository](https://github.com/ccodwg/Covid19CanadaArchive#accessing-the-data) every night!
 
 These efforts are part of the **[What Happened? COVID-19 in Canada](https://whathappened.coronavirus.icu/)** project.
+
+## Flowcharts
+
+Below is a flowchart illustrating the update process for `Covid19Canada`.
+
+<img src="https://raw.githubusercontent.com/ccodwg/Covid19CanadaBot/main/docs/flowcharts/flowchart_ccodwg_update.png" alt="Flowchart illustrating the update process for Covid19Canada" width="60%" height="60%">
