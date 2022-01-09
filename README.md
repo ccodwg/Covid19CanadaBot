@@ -17,6 +17,10 @@ These efforts are part of the **[What Happened? COVID-19 in Canada](https://what
 
 ## Flowcharts
 
-Below is a flowchart illustrating the update process for `Covid19Canada`.
+### Flowchart for `Covid19Canada`
 
 <img src="https://raw.githubusercontent.com/ccodwg/Covid19CanadaBot/main/docs/flowcharts/flowchart_ccodwg_update.png" alt="Flowchart illustrating the update process for Covid19Canada" width="60%" height="60%">
+
+### Flowchart for `Covid19CanadaArchive`
+
+<img src="https://raw.githubusercontent.com/ccodwg/Covid19CanadaBot/main/docs/flowcharts/flowchart_ccodwg_archive.png" alt="Flowchart illustrating the update process for Covid19CanadaArchive" width="60%" height="60%">
