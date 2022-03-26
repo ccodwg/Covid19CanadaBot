@@ -3,6 +3,9 @@ set -a; source archive.env; set +a
 /usr/local/bin/python -m archivist \
                                 prod \
                                 /Covid19CanadaArchive/datasets.json \
+                                --email \
+                                --notify \
+                                --upload-log \
                                 --uuid-exclude \
                                   0635e027-1825-4441-aba7-6f4d1157d080 \
                                   8d0aa5a5-6397-4f4c-a9ca-26ba81f26bc7 \
