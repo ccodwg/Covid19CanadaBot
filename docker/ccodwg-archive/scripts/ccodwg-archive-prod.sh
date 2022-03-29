@@ -1,8 +1,8 @@
 #!/bin/bash
 set -a; source archive.env; set +a
+cd /Covid19CanadaArchive
 /usr/local/bin/python -m archivist \
                                 prod \
-                                /Covid19CanadaArchive/datasets.json \
                                 --email \
                                 --notify \
                                 --upload-log \

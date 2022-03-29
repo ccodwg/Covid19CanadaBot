@@ -1,8 +1,8 @@
 #!/bin/bash
 set -a; source archive.env; set +a
+cd /Covid19CanadaArchive
 /usr/local/bin/python -m archivist \
                                 test \
-                                /Covid19CanadaArchive/datasets.json \
                                 --email \
                                 --uuid-exclude \
                                   0635e027-1825-4441-aba7-6f4d1157d080 \
