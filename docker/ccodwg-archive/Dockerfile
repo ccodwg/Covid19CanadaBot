@@ -23,9 +23,6 @@ RUN pip3 install git+https://github.com/jeanpaulrsoucy/archivist.git#egg=archivi
 # clone Covid19CanadaArchive repository
 RUN git clone --depth=1 https://github.com/ccodwg/Covid19CanadaArchive.git
 
-# install required Python packages
-RUN pip3 install --no-cache-dir -r Covid19CanadaArchive/requirements.txt
-
 # copy scripts
 COPY scripts /scripts
 
