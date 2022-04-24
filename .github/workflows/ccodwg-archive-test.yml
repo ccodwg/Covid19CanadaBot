@@ -16,3 +16,4 @@ jobs:
         with:
           command_string: "scripts/copy-env.sh; scripts/ccodwg-archive-test.sh"
           archive_env: ${{ secrets.archive_env }}
+          docker_token: ${{ secrets.gh_pat_docker }}
