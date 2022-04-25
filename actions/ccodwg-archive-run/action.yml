@@ -18,8 +18,8 @@ runs:
     - name: Run commands in Docker container
       run: |
         echo $TOKEN | docker login ghcr.io -u jeanpaulrsoucy --password-stdin
-        docker pull ghcr.io/ccodwg/ccodwg-archive:main
-        docker run --rm -t -e ARCHIVE_ENV -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/ccodwg/ccodwg-archive:main /bin/bash -c "${{ inputs.command_string }}"
+        docker pull ghcr.io/ccodwg/ccodwg-archive:latest
+        docker run --rm -t -e ARCHIVE_ENV -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/ccodwg/ccodwg-archive:latest /bin/bash -c "${{ inputs.command_string }}"
       shell: bash
       env:
         ARCHIVE_ENV: ${{ inputs.archive_env }}
