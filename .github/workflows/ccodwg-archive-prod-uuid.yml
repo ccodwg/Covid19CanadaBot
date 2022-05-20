@@ -1,0 +1,24 @@
+name: ccodwg-archive-prod-uuid
+
+on:
+  workflow_dispatch:
+    inputs:
+      uuid:
+        description: "The specific UUID to run"
+        required: true
+
+jobs:
+  run-update:
+    runs-on: ubuntu-latest
+    name: Run CCODWG archival tool (prod) for a specific UUID
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run commands in Docker container
+        uses: ./actions/ccodwg-archive-run
+        with:
+          command_string: "scripts/copy-env.sh; scripts/ccodwg-archive-prod-uuid.sh"
+          archive_env: ${{ secrets.archive_env }}
+          docker_token: ${{ secrets.gh_pat_docker }}
+          uuid: ${{ inputs.uuid }}

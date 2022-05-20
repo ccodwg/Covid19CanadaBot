@@ -10,6 +10,9 @@ inputs:
   docker_token:
     description: 'GitHub PAT for accessing the GHCR'
     required: true
+  uuid:
+    description: "The specific UUID to run"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -24,3 +27,4 @@ runs:
       env:
         ARCHIVE_ENV: ${{ inputs.archive_env }}
         TOKEN: ${{ inputs.docker_token }}
+        UUID: ${{ inputs.uuid }}
