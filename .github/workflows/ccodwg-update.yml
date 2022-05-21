@@ -16,7 +16,9 @@ jobs:
           command_string: "export GITHUB_PAT=$GH_PAT; \
                            scripts/copy-service-key.sh; \
                            scripts/update-data.sh; \
-                           scripts/update-plots.sh"
+                           scripts/update-plots.sh; \
+                           sleep 10m; \
+                           scripts/sync-gdrive.sh"
           service_key: ${{ secrets.service_key }}
           gh_pat: ${{ secrets.gh_pat }}
           docker_token: ${{ secrets.gh_pat_docker }}
