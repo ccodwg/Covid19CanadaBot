@@ -4,28 +4,28 @@ inputs:
   command_string:
     description: 'Command string to run in the Docker container'
     required: true
+  service_key:
+    description: 'Google service account key'
+    required: true
   gh_pat:
     description: 'GitHub personal access token'
     required: true
-  service_key:
-    description: 'Google service account key'
+  docker_token:
+    description: 'GitHub PAT for accessing the GHCR'
     required: true
 runs:
   using: "composite"
   steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Build Docker container
-      run: |
-        docker pull selenium/standalone-chrome:latest
-        docker build --build-arg GH_PAT -t self/ccodwg-update:latest docker/ccodwg-update
-      shell: bash
-      env:
-        GH_PAT: ${{ inputs.gh_pat }}
     - name: Run commands in Docker container
       run: |
-        docker run --rm -e SERVICE_KEY -e GH_PAT -v /var/run/docker.sock:/var/run/docker.sock self/ccodwg-update:latest /bin/bash -c "${{ inputs.command_string }}"
+        echo $TOKEN | docker login ghcr.io -u jeanpaulrsoucy --password-stdin
+        docker pull selenium/standalone-chrome:latest
+        docker pull ghcr.io/ccodwg/ccodwg-update:latest
+        docker run --rm -e SERVICE_KEY -e GH_PAT -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/ccodwg/ccodwg-update:latest /bin/bash -c "${{ inputs.command_string }}"
       shell: bash
       env:
         SERVICE_KEY: ${{ inputs.service_key }}
         GH_PAT: ${{ inputs.gh_pat }}
+        TOKEN: ${{ inputs.docker_token }}
