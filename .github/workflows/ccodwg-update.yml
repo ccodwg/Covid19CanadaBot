@@ -17,6 +17,8 @@ jobs:
                            scripts/copy-service-key.sh; \
                            scripts/update-data.sh; \
                            scripts/update-plots.sh; \
+                           echo Current datetime is: $(date); \
+                           echo Waiting 10 minutes until: $(date -d '+10 minutes'); \
                            sleep 10m; \
                            scripts/sync-gdrive.sh"
           service_key: ${{ secrets.service_key }}
