@@ -12,5 +12,4 @@ cd /Covid19CanadaArchive
                                   6edc20de-c174-4c75-9d6c-c463ef43512b \
                                   7ae6a613-aa31-4f63-aaeb-f8fdf3d68ee0 \
                                   45b626ef-d41d-48e9-b007-97edac5ac838 \
-                                  d8d4cbc6-d0a5-4544-ad3e-5a3c3060f973 \
                                 --debug print-md5
