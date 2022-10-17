@@ -6,12 +6,12 @@ I am made up of a set of GitHub Actions workflows meant to assist with the maint
 
 My two most important tasks are:
 
-* 📈 Running the daily updates for [`CovidTimelineCanada`](https://github.com/ccodwg/CovidTimelineCanada) (Timeline of COVID-19 in Canada)
-* 🗃️ Running the nightly update for [`Covid19CanadaArchive`](https://github.com/ccodwg/Covid19CanadaArchive) (Canadian COVID-19 Data Archive)
+* 📈 Running the daily updates for [`CovidTimelineCanada`](https://github.com/ccodwg/CovidTimelineCanada) **(Timeline of COVID-19 in Canada)**
+* 🗃️ Running the nightly update for [`Covid19CanadaArchive`](https://github.com/ccodwg/Covid19CanadaArchive) **(Canadian COVID-19 Data Archive)**
 
-To update the main dataset (`CovidTimelineCanada`), I rely on the [`Covid19CanadaETL`](https://github.com/ccodwg/Covid19CanadaETL) R package, which uses the R packages [`Covid19CanadaData`](https://github.com/ccodwg/Covid19CanadaData) and [`Covid19CanadaDataProcess`](https://github.com/ccodwg/Covid19CanadaDataProcess) to pull from and harmonize Canadian COVID-19 data from dozens of sources!
+To update the **Timeline of COVID-19 in Canada**, I rely on the R packages [`Covid19CanadaETL`](https://github.com/ccodwg/Covid19CanadaETL), [`Covid19CanadaData`](https://github.com/ccodwg/Covid19CanadaData) and [`Covid19CanadaDataProcess`](https://github.com/ccodwg/Covid19CanadaDataProcess) to pull from and harmonize Canadian COVID-19 data from dozens of sources!
 
-To update the archive (`Covid19CanadaArchive`), I use the Python package [`archivist`](https://github.com/jeanpaulrsoucy/archivist). This allows me to save snapshots of hundreds of datasets, websites and reports to a [public repository](https://github.com/ccodwg/Covid19CanadaArchive#accessing-the-data) every night!
+To update the **Canadian COVID-19 Data Archive**, I use the Python package [`archivist`](https://github.com/jeanpaulrsoucy/archivist). This allows me to save snapshots of hundreds of datasets, websites and reports to a [public repository](https://github.com/ccodwg/Covid19CanadaArchive#accessing-the-data) every night!
 
 These efforts are part of the **[What Happened? COVID-19 in Canada](https://whathappened.coronavirus.icu/)** project.
 
