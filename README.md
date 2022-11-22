@@ -19,7 +19,7 @@ These efforts are part of the **[What Happened? COVID-19 in Canada](https://what
 
 ### Flowchart for `CovidTimelineCanada`
 
-This flowchart will be updated shortly.
+<img src="https://raw.githubusercontent.com/ccodwg/Covid19CanadaBot/main/docs/flowcharts/flowchart_ccodwg_update.png" alt="Flowchart illustrating the update process for CovidTimelineCanada" width="60%" height="60%">
 
 ### Flowchart for `Covid19CanadaArchive`
 
