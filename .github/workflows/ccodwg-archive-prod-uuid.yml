@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run commands in Docker container
         uses: ./actions/ccodwg-archive-run
         with:

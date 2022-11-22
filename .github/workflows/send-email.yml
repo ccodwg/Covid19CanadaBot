@@ -16,7 +16,7 @@ jobs:
     name: Send email
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Read and set email environment
         run: |
           # mask subject and body
