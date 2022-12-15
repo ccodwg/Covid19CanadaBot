@@ -6,5 +6,4 @@ cd /Covid19CanadaArchive
                                 --email \
                                 --notify \
                                 --upload-log \
-                                --uuid $UUID \
-                                --debug print-md5
+                                --uuid $UUID
