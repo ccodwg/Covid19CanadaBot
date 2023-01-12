@@ -28,6 +28,7 @@ then
 	echo "Script completed without issue."
 else
   	echo "Script for failed datasets will run after 10 minutes..."
+    echo "$RERUN"
 	# wait 10 minutes
 	sleep 10m
 	# run script
