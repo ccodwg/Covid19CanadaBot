@@ -22,19 +22,20 @@ cd /Covid19CanadaArchive
                                   80c53b1a-1e74-4871-9d9c-920f40e663e9 \
                                   2>&3
 # read stderr and run rerun code, if necessary
-RERUN="$(head -n 1 <&4)"
-if [ -z "$RERUN" ]
+RERUN="$(tail -n 1 <&4)"
+if [[ "$RERUN" =~ ^RERUN: ]]
 then
-	echo "Script completed without issue."
+  echo "Script for failed datasets will run after 10 minutes..."
+  RERUN=$(echo "$RERUN" | sed -e 's/^RERUN://g')
+  echo "$RERUN"
+  # wait 10 minutes
+  sleep 10m
+  # run script
+  echo "Rerunning script for failed datasets..."
+  eval $RERUN
+  echo "Script completed."
 else
-  	echo "Script for failed datasets will run after 10 minutes..."
-    echo "$RERUN"
-	# wait 10 minutes
-	sleep 10m
-	# run script
-  	echo "Rerunning script for failed datasets..."
-	eval $RERUN
-	echo "Script completed."
+  echo "Script completed without issue."
 fi
 # close file descriptor
 exec 3>&-
