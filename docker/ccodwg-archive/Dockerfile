@@ -11,8 +11,8 @@ RUN apt-get -y update && apt-get install -y \
  unzip
 
 # download and unzip Chromedriver
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+RUN export URL=$(python -c "import urllib.request, json; response = urllib.request.urlopen('https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json'); data = json.loads(response.read()); print(data['channels']['Stable']['downloads']['chromedriver'][0]['url'])") && wget -O /tmp/chromedriver.zip $URL
+RUN unzip -j /tmp/chromedriver.zip chromedriver-linux64/chromedriver -d /usr/local/bin/
 
 # set display port environmental variable
 ENV DISPLAY=:99
