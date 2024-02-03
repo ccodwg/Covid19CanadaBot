@@ -4,6 +4,8 @@ Hi, my name is CCODWG-bot! 🤖
 
 I am made up of a set of GitHub Actions workflows meant to assist with the maintenance of the datasets put out by the [COVID-19 Canada Open Data Working Group](https://opencovid.ca/).
 
+**I am retired as of February 2024, but you can read about my previous duties below.**
+
 My two most important tasks are:
 
 * 📈 Running the daily updates for [`CovidTimelineCanada`](https://github.com/ccodwg/CovidTimelineCanada) **(Timeline of COVID-19 in Canada)**
